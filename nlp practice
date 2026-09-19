@@ -1,0 +1,1477 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyOR0saOSbEIO4oS0XjRwX/L",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/anushkaaa-k/NLP/blob/main/nlp%20practice\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "paragraph = \"\"\" Dinosaurs are varied from taxonomic, morphological and ecological standpoints. Birds, at over 11,000 living species, are among the most diverse groups of vertebrates. Using fossil evidence, paleontologists have identified over 900 distinct genera and more than 1,000 different species of non-avian dinosaurs. Dinosaurs are represented on every continent by both extant species (birds) and fossil remains. Through most of the 20th century, before birds were recognized as dinosaurs, most of the scientific community presumed dinosaurs to have been sluggish and cold-blooded. Most research conducted since the 1970s, however, has indicated that dinosaurs were active animals with elevated metabolisms and numerous adaptations for social interaction. Evidence shows that all dinosaurs had erect legs similar to that of birds and many mammals, as opposed to the sprawling leg stance of cold-blooded tetrapods. Some were herbivorous, others carnivorous. Evidence suggests that all dinosaurs were egg-laying, and that nest-building was a trait shared by many dinosaurs, both avian and non-avian.\n",
+        "While dinosaurs were ancestrally bipedal, many extinct groups included quadrupedal species, and some were able to shift between these stances. Elaborate display structures such as horns or crests are common to all dinosaur groups, and some extinct groups developed skeletal modifications such as bony armor and spines. While the dinosaurs' modern-day surviving avian lineage (birds) are generally small due to the constraints of flight, many non-avian dinosaurs were large-bodied—the largest sauropod dinosaurs are estimated to have reached lengths of 39.7 meters (130 feet) and heights of 18 m (59 ft) and were the largest land animals of all time.\n",
+        " \"\"\""
+      ],
+      "metadata": {
+        "id": "D10AAPAjzcj5"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "paragraph"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 157
+        },
+        "id": "LhtxEnepzqoh",
+        "outputId": "c20a365a-3a3f-4f39-e8fb-76d64229084c"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "\" Dinosaurs are varied from taxonomic, morphological and ecological standpoints. Birds, at over 11,000 living species, are among the most diverse groups of vertebrates. Using fossil evidence, paleontologists have identified over 900 distinct genera and more than 1,000 different species of non-avian dinosaurs. Dinosaurs are represented on every continent by both extant species (birds) and fossil remains. Through most of the 20th century, before birds were recognized as dinosaurs, most of the scientific community presumed dinosaurs to have been sluggish and cold-blooded. Most research conducted since the 1970s, however, has indicated that dinosaurs were active animals with elevated metabolisms and numerous adaptations for social interaction. Evidence shows that all dinosaurs had erect legs similar to that of birds and many mammals, as opposed to the sprawling leg stance of cold-blooded tetrapods. Some were herbivorous, others carnivorous. Evidence suggests that all dinosaurs were egg-laying, and that nest-building was a trait shared by many dinosaurs, both avian and non-avian.\\nWhile dinosaurs were ancestrally bipedal, many extinct groups included quadrupedal species, and some were able to shift between these stances. Elaborate display structures such as horns or crests are common to all dinosaur groups, and some extinct groups developed skeletal modifications such as bony armor and spines. While the dinosaurs' modern-day surviving avian lineage (birds) are generally small due to the constraints of flight, many non-avian dinosaurs were large-bodied—the largest sauropod dinosaurs are estimated to have reached lengths of 39.7 meters (130 feet) and heights of 18 m (59 ft) and were the largest land animals of all time.\\n \""
+            ],
+            "application/vnd.google.colaboratory.intrinsic+json": {
+              "type": "string"
+            }
+          },
+          "metadata": {},
+          "execution_count": 3
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import nltk\n",
+        "from nltk.stem import PorterStemmer\n",
+        "from nltk.corpus import stopwords"
+      ],
+      "metadata": {
+        "id": "5iUrXnn1z1Jm"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "## tokenization = converting paragraph into sentences then words\n",
+        "nltk.download('punkt')\n",
+        "nltk.download('punkt_tab')\n",
+        "sentences = nltk.sent_tokenize(paragraph)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "O9Clu-PW1KUO",
+        "outputId": "87fc69a8-709f-470e-d112-c500e2dedd9b"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "[nltk_data] Downloading package punkt to /root/nltk_data...\n",
+            "[nltk_data]   Unzipping tokenizers/punkt.zip.\n",
+            "[nltk_data] Downloading package punkt_tab to /root/nltk_data...\n",
+            "[nltk_data]   Unzipping tokenizers/punkt_tab.zip.\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "print(sentences)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "0NRkrd2c1iiL",
+        "outputId": "cee30db9-ff6f-4d4c-b976-dd6594f2d22d"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "[' Dinosaurs are varied from taxonomic, morphological and ecological standpoints.', 'Birds, at over 11,000 living species, are among the most diverse groups of vertebrates.', 'Using fossil evidence, paleontologists have identified over 900 distinct genera and more than 1,000 different species of non-avian dinosaurs.', 'Dinosaurs are represented on every continent by both extant species (birds) and fossil remains.', 'Through most of the 20th century, before birds were recognized as dinosaurs, most of the scientific community presumed dinosaurs to have been sluggish and cold-blooded.', 'Most research conducted since the 1970s, however, has indicated that dinosaurs were active animals with elevated metabolisms and numerous adaptations for social interaction.', 'Evidence shows that all dinosaurs had erect legs similar to that of birds and many mammals, as opposed to the sprawling leg stance of cold-blooded tetrapods.', 'Some were herbivorous, others carnivorous.', 'Evidence suggests that all dinosaurs were egg-laying, and that nest-building was a trait shared by many dinosaurs, both avian and non-avian.', 'While dinosaurs were ancestrally bipedal, many extinct groups included quadrupedal species, and some were able to shift between these stances.', 'Elaborate display structures such as horns or crests are common to all dinosaur groups, and some extinct groups developed skeletal modifications such as bony armor and spines.', \"While the dinosaurs' modern-day surviving avian lineage (birds) are generally small due to the constraints of flight, many non-avian dinosaurs were large-bodied—the largest sauropod dinosaurs are estimated to have reached lengths of 39.7 meters (130 feet) and heights of 18 m (59 ft) and were the largest land animals of all time.\"]\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "type(sentences)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "NYBcThY31x_L",
+        "outputId": "d805ca94-92ee-41f7-e548-de1388e92d03"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "list"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 6
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "stemmer = PorterStemmer()\n",
+        "stemmer.stem('history')"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 35
+        },
+        "id": "bZoKnLtm2EoR",
+        "outputId": "e1ce1c0a-1582-4fef-8fab-c732cffa6920"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "'histori'"
+            ],
+            "application/vnd.google.colaboratory.intrinsic+json": {
+              "type": "string"
+            }
+          },
+          "metadata": {},
+          "execution_count": 7
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from nltk.stem import WordNetLemmatizer\n",
+        "nltk.download('wordnet')\n",
+        "lemmatizer= WordNetLemmatizer()\n",
+        "lemmatizer.lemmatize('scientific')"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 53
+        },
+        "id": "t15MBqG32qLb",
+        "outputId": "6a73ab54-0eef-4f7a-bacb-b0a10f29f2bb"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "[nltk_data] Downloading package wordnet to /root/nltk_data...\n"
+          ]
+        },
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "'scientific'"
+            ],
+            "application/vnd.google.colaboratory.intrinsic+json": {
+              "type": "string"
+            }
+          },
+          "metadata": {},
+          "execution_count": 8
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "len(sentences)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "vaNvJBoq3u-K",
+        "outputId": "1a969cfc-85f3-4bc4-a2c3-ed7a289a2ffc"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "12"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 9
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import re\n",
+        "corpus = []\n",
+        "for i in range (len(sentences)):\n",
+        "  # Preserve spaces by including it in the character set to keep\n",
+        "  review= re.sub('[^a-zA-Z ]' ,'' , sentences[i])\n",
+        "  review = review.lower()\n",
+        "  corpus.append(review)"
+      ],
+      "metadata": {
+        "id": "BXCgbQAS39yz"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "corpus"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "V3iXbY2G5wuO",
+        "outputId": "26cd2534-aa2f-4ab0-b53d-b095c71dbfb8"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "[' dinosaurs are varied from taxonomic morphological and ecological standpoints',\n",
+              " 'birds at over  living species are among the most diverse groups of vertebrates',\n",
+              " 'using fossil evidence paleontologists have identified over  distinct genera and more than  different species of nonavian dinosaurs',\n",
+              " 'dinosaurs are represented on every continent by both extant species birds and fossil remains',\n",
+              " 'through most of the th century before birds were recognized as dinosaurs most of the scientific community presumed dinosaurs to have been sluggish and coldblooded',\n",
+              " 'most research conducted since the s however has indicated that dinosaurs were active animals with elevated metabolisms and numerous adaptations for social interaction',\n",
+              " 'evidence shows that all dinosaurs had erect legs similar to that of birds and many mammals as opposed to the sprawling leg stance of coldblooded tetrapods',\n",
+              " 'some were herbivorous others carnivorous',\n",
+              " 'evidence suggests that all dinosaurs were egglaying and that nestbuilding was a trait shared by many dinosaurs both avian and nonavian',\n",
+              " 'while dinosaurs were ancestrally bipedal many extinct groups included quadrupedal species and some were able to shift between these stances',\n",
+              " 'elaborate display structures such as horns or crests are common to all dinosaur groups and some extinct groups developed skeletal modifications such as bony armor and spines',\n",
+              " 'while the dinosaurs modernday surviving avian lineage birds are generally small due to the constraints of flight many nonavian dinosaurs were largebodiedthe largest sauropod dinosaurs are estimated to have reached lengths of  meters  feet and heights of  m  ft and were the largest land animals of all time']"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 11
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "##stemming\n",
+        "nltk.download('stopwords')\n",
+        "for i in corpus:\n",
+        "  words = nltk.word_tokenize(i)\n",
+        "  for word in words:\n",
+        "    if word not in set(stopwords.words('english')):\n",
+        "      print(stemmer.stem(word))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "m2C30TFy5_aJ",
+        "outputId": "814e9b07-9b06-4383-e110-b15a811e32e6"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "dinosaur\n",
+            "vari\n",
+            "taxonom\n",
+            "morpholog\n",
+            "ecolog\n",
+            "standpoint\n",
+            "bird\n",
+            "live\n",
+            "speci\n",
+            "among\n",
+            "divers\n",
+            "group\n",
+            "vertebr\n",
+            "use\n",
+            "fossil\n",
+            "evid\n",
+            "paleontologist\n",
+            "identifi\n",
+            "distinct\n",
+            "genera\n",
+            "differ\n",
+            "speci\n",
+            "nonavian\n",
+            "dinosaur\n",
+            "dinosaur\n",
+            "repres\n",
+            "everi\n",
+            "contin\n",
+            "extant\n",
+            "speci\n",
+            "bird\n",
+            "fossil\n",
+            "remain\n",
+            "th\n",
+            "centuri\n",
+            "bird\n",
+            "recogn\n",
+            "dinosaur\n",
+            "scientif\n",
+            "commun\n",
+            "presum\n",
+            "dinosaur\n",
+            "sluggish\n",
+            "coldblood\n",
+            "research\n",
+            "conduct\n",
+            "sinc\n",
+            "howev\n",
+            "indic\n",
+            "dinosaur\n",
+            "activ\n",
+            "anim\n",
+            "elev\n",
+            "metabol\n",
+            "numer\n",
+            "adapt\n",
+            "social\n",
+            "interact\n",
+            "evid\n",
+            "show\n",
+            "dinosaur\n",
+            "erect\n",
+            "leg\n",
+            "similar\n",
+            "bird\n",
+            "mani\n",
+            "mammal\n",
+            "oppos\n",
+            "sprawl\n",
+            "leg\n",
+            "stanc\n",
+            "coldblood\n",
+            "tetrapod\n",
+            "herbivor\n",
+            "other\n",
+            "carnivor\n",
+            "evid\n",
+            "suggest\n",
+            "dinosaur\n",
+            "egglay\n",
+            "nestbuild\n",
+            "trait\n",
+            "share\n",
+            "mani\n",
+            "dinosaur\n",
+            "avian\n",
+            "nonavian\n",
+            "dinosaur\n",
+            "ancestr\n",
+            "biped\n",
+            "mani\n",
+            "extinct\n",
+            "group\n",
+            "includ\n",
+            "quadruped\n",
+            "speci\n",
+            "abl\n",
+            "shift\n",
+            "stanc\n",
+            "elabor\n",
+            "display\n",
+            "structur\n",
+            "horn\n",
+            "crest\n",
+            "common\n",
+            "dinosaur\n",
+            "group\n",
+            "extinct\n",
+            "group\n",
+            "develop\n",
+            "skelet\n",
+            "modif\n",
+            "boni\n",
+            "armor\n",
+            "spine\n",
+            "dinosaur\n",
+            "modernday\n",
+            "surviv\n",
+            "avian\n",
+            "lineag\n",
+            "bird\n",
+            "gener\n",
+            "small\n",
+            "due\n",
+            "constraint\n",
+            "flight\n",
+            "mani\n",
+            "nonavian\n",
+            "dinosaur\n",
+            "largebodiedth\n",
+            "largest\n",
+            "sauropod\n",
+            "dinosaur\n",
+            "estim\n",
+            "reach\n",
+            "length\n",
+            "meter\n",
+            "feet\n",
+            "height\n",
+            "ft\n",
+            "largest\n",
+            "land\n",
+            "anim\n",
+            "time\n"
+          ]
+        },
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "[nltk_data] Downloading package stopwords to /root/nltk_data...\n",
+            "[nltk_data]   Unzipping corpora/stopwords.zip.\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "stopwords.words('english')"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "8EWHzSEb7nq7",
+        "outputId": "320e9015-3a44-4332-888b-dcda3031d7d8"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "['a',\n",
+              " 'about',\n",
+              " 'above',\n",
+              " 'after',\n",
+              " 'again',\n",
+              " 'against',\n",
+              " 'ain',\n",
+              " 'all',\n",
+              " 'am',\n",
+              " 'an',\n",
+              " 'and',\n",
+              " 'any',\n",
+              " 'are',\n",
+              " 'aren',\n",
+              " \"aren't\",\n",
+              " 'as',\n",
+              " 'at',\n",
+              " 'be',\n",
+              " 'because',\n",
+              " 'been',\n",
+              " 'before',\n",
+              " 'being',\n",
+              " 'below',\n",
+              " 'between',\n",
+              " 'both',\n",
+              " 'but',\n",
+              " 'by',\n",
+              " 'can',\n",
+              " 'couldn',\n",
+              " \"couldn't\",\n",
+              " 'd',\n",
+              " 'did',\n",
+              " 'didn',\n",
+              " \"didn't\",\n",
+              " 'do',\n",
+              " 'does',\n",
+              " 'doesn',\n",
+              " \"doesn't\",\n",
+              " 'doing',\n",
+              " 'don',\n",
+              " \"don't\",\n",
+              " 'down',\n",
+              " 'during',\n",
+              " 'each',\n",
+              " 'few',\n",
+              " 'for',\n",
+              " 'from',\n",
+              " 'further',\n",
+              " 'had',\n",
+              " 'hadn',\n",
+              " \"hadn't\",\n",
+              " 'has',\n",
+              " 'hasn',\n",
+              " \"hasn't\",\n",
+              " 'have',\n",
+              " 'haven',\n",
+              " \"haven't\",\n",
+              " 'having',\n",
+              " 'he',\n",
+              " \"he'd\",\n",
+              " \"he'll\",\n",
+              " 'her',\n",
+              " 'here',\n",
+              " 'hers',\n",
+              " 'herself',\n",
+              " \"he's\",\n",
+              " 'him',\n",
+              " 'himself',\n",
+              " 'his',\n",
+              " 'how',\n",
+              " 'i',\n",
+              " \"i'd\",\n",
+              " 'if',\n",
+              " \"i'll\",\n",
+              " \"i'm\",\n",
+              " 'in',\n",
+              " 'into',\n",
+              " 'is',\n",
+              " 'isn',\n",
+              " \"isn't\",\n",
+              " 'it',\n",
+              " \"it'd\",\n",
+              " \"it'll\",\n",
+              " \"it's\",\n",
+              " 'its',\n",
+              " 'itself',\n",
+              " \"i've\",\n",
+              " 'just',\n",
+              " 'll',\n",
+              " 'm',\n",
+              " 'ma',\n",
+              " 'me',\n",
+              " 'mightn',\n",
+              " \"mightn't\",\n",
+              " 'more',\n",
+              " 'most',\n",
+              " 'mustn',\n",
+              " \"mustn't\",\n",
+              " 'my',\n",
+              " 'myself',\n",
+              " 'needn',\n",
+              " \"needn't\",\n",
+              " 'no',\n",
+              " 'nor',\n",
+              " 'not',\n",
+              " 'now',\n",
+              " 'o',\n",
+              " 'of',\n",
+              " 'off',\n",
+              " 'on',\n",
+              " 'once',\n",
+              " 'only',\n",
+              " 'or',\n",
+              " 'other',\n",
+              " 'our',\n",
+              " 'ours',\n",
+              " 'ourselves',\n",
+              " 'out',\n",
+              " 'over',\n",
+              " 'own',\n",
+              " 're',\n",
+              " 's',\n",
+              " 'same',\n",
+              " 'shan',\n",
+              " \"shan't\",\n",
+              " 'she',\n",
+              " \"she'd\",\n",
+              " \"she'll\",\n",
+              " \"she's\",\n",
+              " 'should',\n",
+              " 'shouldn',\n",
+              " \"shouldn't\",\n",
+              " \"should've\",\n",
+              " 'so',\n",
+              " 'some',\n",
+              " 'such',\n",
+              " 't',\n",
+              " 'than',\n",
+              " 'that',\n",
+              " \"that'll\",\n",
+              " 'the',\n",
+              " 'their',\n",
+              " 'theirs',\n",
+              " 'them',\n",
+              " 'themselves',\n",
+              " 'then',\n",
+              " 'there',\n",
+              " 'these',\n",
+              " 'they',\n",
+              " \"they'd\",\n",
+              " \"they'll\",\n",
+              " \"they're\",\n",
+              " \"they've\",\n",
+              " 'this',\n",
+              " 'those',\n",
+              " 'through',\n",
+              " 'to',\n",
+              " 'too',\n",
+              " 'under',\n",
+              " 'until',\n",
+              " 'up',\n",
+              " 've',\n",
+              " 'very',\n",
+              " 'was',\n",
+              " 'wasn',\n",
+              " \"wasn't\",\n",
+              " 'we',\n",
+              " \"we'd\",\n",
+              " \"we'll\",\n",
+              " \"we're\",\n",
+              " 'were',\n",
+              " 'weren',\n",
+              " \"weren't\",\n",
+              " \"we've\",\n",
+              " 'what',\n",
+              " 'when',\n",
+              " 'where',\n",
+              " 'which',\n",
+              " 'while',\n",
+              " 'who',\n",
+              " 'whom',\n",
+              " 'why',\n",
+              " 'will',\n",
+              " 'with',\n",
+              " 'won',\n",
+              " \"won't\",\n",
+              " 'wouldn',\n",
+              " \"wouldn't\",\n",
+              " 'y',\n",
+              " 'you',\n",
+              " \"you'd\",\n",
+              " \"you'll\",\n",
+              " 'your',\n",
+              " \"you're\",\n",
+              " 'yours',\n",
+              " 'yourself',\n",
+              " 'yourselves',\n",
+              " \"you've\"]"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 13
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "##lemmatize\n",
+        "nltk.download('stopwords')\n",
+        "for i in corpus:\n",
+        "  words = nltk.word_tokenize(i)\n",
+        "  for word in words:\n",
+        "    if word not in set(stopwords.words('english')):\n",
+        "      print(lemmatizer.lemmatize(word))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "F_3Ip1-d9OO6",
+        "outputId": "dc123064-ba51-470e-c307-62f75b885f4e"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "dinosaur\n",
+            "varied\n",
+            "taxonomic\n",
+            "morphological\n",
+            "ecological\n",
+            "standpoint\n",
+            "bird\n",
+            "living\n",
+            "specie\n",
+            "among\n",
+            "diverse\n",
+            "group\n",
+            "vertebrate\n",
+            "using\n",
+            "fossil\n",
+            "evidence\n",
+            "paleontologist\n",
+            "identified\n",
+            "distinct\n",
+            "genus\n",
+            "different\n",
+            "specie\n",
+            "nonavian\n",
+            "dinosaur\n",
+            "dinosaur\n",
+            "represented\n",
+            "every\n",
+            "continent\n",
+            "extant\n",
+            "specie\n",
+            "bird\n",
+            "fossil\n",
+            "remains\n",
+            "th\n",
+            "century\n",
+            "bird\n",
+            "recognized\n",
+            "dinosaur\n",
+            "scientific\n",
+            "community\n",
+            "presumed\n",
+            "dinosaur\n",
+            "sluggish\n",
+            "coldblooded\n",
+            "research\n",
+            "conducted\n",
+            "since\n",
+            "however\n",
+            "indicated\n",
+            "dinosaur\n",
+            "active\n",
+            "animal\n",
+            "elevated\n",
+            "metabolism\n",
+            "numerous\n",
+            "adaptation\n",
+            "social\n",
+            "interaction\n",
+            "evidence\n",
+            "show\n",
+            "dinosaur\n",
+            "erect\n",
+            "leg\n",
+            "similar\n",
+            "bird\n",
+            "many\n",
+            "mammal\n",
+            "opposed\n",
+            "sprawling\n",
+            "leg\n",
+            "stance\n",
+            "coldblooded\n",
+            "tetrapod\n",
+            "herbivorous\n",
+            "others\n",
+            "carnivorous\n",
+            "evidence\n",
+            "suggests\n",
+            "dinosaur\n",
+            "egglaying\n",
+            "nestbuilding\n",
+            "trait\n",
+            "shared\n",
+            "many\n",
+            "dinosaur\n",
+            "avian\n",
+            "nonavian\n",
+            "dinosaur\n",
+            "ancestrally\n",
+            "bipedal\n",
+            "many\n",
+            "extinct\n",
+            "group\n",
+            "included\n",
+            "quadrupedal\n",
+            "specie\n",
+            "able\n",
+            "shift\n",
+            "stance\n",
+            "elaborate\n",
+            "display\n",
+            "structure\n",
+            "horn\n",
+            "crest\n",
+            "common\n",
+            "dinosaur\n",
+            "group\n",
+            "extinct\n",
+            "group\n",
+            "developed\n",
+            "skeletal\n",
+            "modification\n",
+            "bony\n",
+            "armor\n",
+            "spine\n",
+            "dinosaur\n",
+            "modernday\n",
+            "surviving\n",
+            "avian\n",
+            "lineage\n",
+            "bird\n",
+            "generally\n",
+            "small\n",
+            "due\n",
+            "constraint\n",
+            "flight\n",
+            "many\n",
+            "nonavian\n",
+            "dinosaur\n",
+            "largebodiedthe\n",
+            "largest\n",
+            "sauropod\n",
+            "dinosaur\n",
+            "estimated\n",
+            "reached\n",
+            "length\n",
+            "meter\n",
+            "foot\n",
+            "height\n",
+            "ft\n",
+            "largest\n",
+            "land\n",
+            "animal\n",
+            "time\n"
+          ]
+        },
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "[nltk_data] Downloading package stopwords to /root/nltk_data...\n",
+            "[nltk_data]   Package stopwords is already up-to-date!\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from sklearn.feature_extraction.text import CountVectorizer\n",
+        "cv = CountVectorizer()\n",
+        "X = cv.fit_transform(corpus)\n",
+        "cv.vocabulary_"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "CbhH3nvt9WoG",
+        "outputId": "106d983b-03a2-4b52-8a2f-cbac0033cd2b"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "{'dinosaurs': 33,\n",
+              " 'are': 8,\n",
+              " 'varied': 136,\n",
+              " 'from': 52,\n",
+              " 'taxonomic': 124,\n",
+              " 'morphological': 83,\n",
+              " 'and': 6,\n",
+              " 'ecological': 38,\n",
+              " 'standpoints': 119,\n",
+              " 'birds': 17,\n",
+              " 'at': 11,\n",
+              " 'over': 93,\n",
+              " 'living': 75,\n",
+              " 'species': 114,\n",
+              " 'among': 4,\n",
+              " 'the': 129,\n",
+              " 'most': 84,\n",
+              " 'diverse': 36,\n",
+              " 'groups': 56,\n",
+              " 'of': 88,\n",
+              " 'vertebrates': 137,\n",
+              " 'using': 135,\n",
+              " 'fossil': 51,\n",
+              " 'evidence': 45,\n",
+              " 'paleontologists': 94,\n",
+              " 'have': 59,\n",
+              " 'identified': 64,\n",
+              " 'distinct': 35,\n",
+              " 'genera': 54,\n",
+              " 'more': 82,\n",
+              " 'than': 127,\n",
+              " 'different': 31,\n",
+              " 'nonavian': 86,\n",
+              " 'represented': 100,\n",
+              " 'on': 89,\n",
+              " 'every': 44,\n",
+              " 'continent': 28,\n",
+              " 'by': 20,\n",
+              " 'both': 19,\n",
+              " 'extant': 46,\n",
+              " 'remains': 99,\n",
+              " 'through': 131,\n",
+              " 'th': 126,\n",
+              " 'century': 22,\n",
+              " 'before': 14,\n",
+              " 'were': 139,\n",
+              " 'recognized': 98,\n",
+              " 'as': 10,\n",
+              " 'scientific': 103,\n",
+              " 'community': 25,\n",
+              " 'presumed': 95,\n",
+              " 'to': 133,\n",
+              " 'been': 13,\n",
+              " 'sluggish': 110,\n",
+              " 'coldblooded': 23,\n",
+              " 'research': 101,\n",
+              " 'conducted': 26,\n",
+              " 'since': 108,\n",
+              " 'however': 63,\n",
+              " 'has': 58,\n",
+              " 'indicated': 66,\n",
+              " 'that': 128,\n",
+              " 'active': 1,\n",
+              " 'animals': 7,\n",
+              " 'with': 141,\n",
+              " 'elevated': 41,\n",
+              " 'metabolisms': 78,\n",
+              " 'numerous': 87,\n",
+              " 'adaptations': 2,\n",
+              " 'for': 50,\n",
+              " 'social': 112,\n",
+              " 'interaction': 67,\n",
+              " 'shows': 106,\n",
+              " 'all': 3,\n",
+              " 'had': 57,\n",
+              " 'erect': 42,\n",
+              " 'legs': 72,\n",
+              " 'similar': 107,\n",
+              " 'many': 77,\n",
+              " 'mammals': 76,\n",
+              " 'opposed': 90,\n",
+              " 'sprawling': 116,\n",
+              " 'leg': 71,\n",
+              " 'stance': 117,\n",
+              " 'tetrapods': 125,\n",
+              " 'some': 113,\n",
+              " 'herbivorous': 61,\n",
+              " 'others': 92,\n",
+              " 'carnivorous': 21,\n",
+              " 'suggests': 122,\n",
+              " 'egglaying': 39,\n",
+              " 'nestbuilding': 85,\n",
+              " 'was': 138,\n",
+              " 'trait': 134,\n",
+              " 'shared': 104,\n",
+              " 'avian': 12,\n",
+              " 'while': 140,\n",
+              " 'ancestrally': 5,\n",
+              " 'bipedal': 16,\n",
+              " 'extinct': 47,\n",
+              " 'included': 65,\n",
+              " 'quadrupedal': 96,\n",
+              " 'able': 0,\n",
+              " 'shift': 105,\n",
+              " 'between': 15,\n",
+              " 'these': 130,\n",
+              " 'stances': 118,\n",
+              " 'elaborate': 40,\n",
+              " 'display': 34,\n",
+              " 'structures': 120,\n",
+              " 'such': 121,\n",
+              " 'horns': 62,\n",
+              " 'or': 91,\n",
+              " 'crests': 29,\n",
+              " 'common': 24,\n",
+              " 'dinosaur': 32,\n",
+              " 'developed': 30,\n",
+              " 'skeletal': 109,\n",
+              " 'modifications': 81,\n",
+              " 'bony': 18,\n",
+              " 'armor': 9,\n",
+              " 'spines': 115,\n",
+              " 'modernday': 80,\n",
+              " 'surviving': 123,\n",
+              " 'lineage': 74,\n",
+              " 'generally': 55,\n",
+              " 'small': 111,\n",
+              " 'due': 37,\n",
+              " 'constraints': 27,\n",
+              " 'flight': 49,\n",
+              " 'largebodiedthe': 69,\n",
+              " 'largest': 70,\n",
+              " 'sauropod': 102,\n",
+              " 'estimated': 43,\n",
+              " 'reached': 97,\n",
+              " 'lengths': 73,\n",
+              " 'meters': 79,\n",
+              " 'feet': 48,\n",
+              " 'heights': 60,\n",
+              " 'ft': 53,\n",
+              " 'land': 68,\n",
+              " 'time': 132}"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 15
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "corpus[0]"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 35
+        },
+        "id": "IcxhC2jc-jPH",
+        "outputId": "d16d6e00-6659-45cf-a2ed-e21483f05fd9"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "' dinosaurs are varied from taxonomic morphological and ecological standpoints'"
+            ],
+            "application/vnd.google.colaboratory.intrinsic+json": {
+              "type": "string"
+            }
+          },
+          "metadata": {},
+          "execution_count": 17
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "X[0].toarray()"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "p-AAy6Ma-mDc",
+        "outputId": "db81843b-0c85-4430-9d31-fdb665b3331a"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "array([[0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,\n",
+              "        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,\n",
+              "        0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,\n",
+              "        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,\n",
+              "        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,\n",
+              "        0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,\n",
+              "        0, 0, 0, 0, 1, 0, 0, 0, 0, 0]])"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 18
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "### TFIDF\n",
+        "from sklearn.feature_extraction.text import TfidfVectorizer\n",
+        "cv = TfidfVectorizer(ngram_range= (3,3))\n",
+        "X = cv.fit_transform(corpus)\n",
+        "cv.vocabulary_"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "L5ZvnL7xRPtp",
+        "outputId": "58686d9f-5cae-4153-e1b8-d5701649d8d4"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "{'dinosaurs are varied': 60,\n",
+              " 'are varied from': 25,\n",
+              " 'varied from taxonomic': 206,\n",
+              " 'from taxonomic morphological': 90,\n",
+              " 'taxonomic morphological and': 181,\n",
+              " 'morphological and ecological': 129,\n",
+              " 'and ecological standpoints': 8,\n",
+              " 'birds at over': 41,\n",
+              " 'at over living': 31,\n",
+              " 'over living species': 149,\n",
+              " 'living species are': 118,\n",
+              " 'species are among': 171,\n",
+              " 'are among the': 20,\n",
+              " 'among the most': 6,\n",
+              " 'the most diverse': 192,\n",
+              " 'most diverse groups': 130,\n",
+              " 'diverse groups of': 72,\n",
+              " 'groups of vertebrates': 97,\n",
+              " 'using fossil evidence': 205,\n",
+              " 'fossil evidence paleontologists': 89,\n",
+              " 'evidence paleontologists have': 80,\n",
+              " 'paleontologists have identified': 150,\n",
+              " 'have identified over': 101,\n",
+              " 'identified over distinct': 107,\n",
+              " 'over distinct genera': 148,\n",
+              " 'distinct genera and': 71,\n",
+              " 'genera and more': 92,\n",
+              " 'and more than': 12,\n",
+              " 'more than different': 128,\n",
+              " 'than different species': 183,\n",
+              " 'different species of': 56,\n",
+              " 'species of nonavian': 173,\n",
+              " 'of nonavian dinosaurs': 142,\n",
+              " 'dinosaurs are represented': 59,\n",
+              " 'are represented on': 24,\n",
+              " 'represented on every': 155,\n",
+              " 'on every continent': 145,\n",
+              " 'every continent by': 79,\n",
+              " 'continent by both': 53,\n",
+              " 'by both extant': 46,\n",
+              " 'both extant species': 45,\n",
+              " 'extant species birds': 83,\n",
+              " 'species birds and': 172,\n",
+              " 'birds and fossil': 38,\n",
+              " 'and fossil remains': 9,\n",
+              " 'through most of': 196,\n",
+              " 'most of the': 131,\n",
+              " 'of the th': 144,\n",
+              " 'the th century': 195,\n",
+              " 'th century before': 182,\n",
+              " 'century before birds': 48,\n",
+              " 'before birds were': 35,\n",
+              " 'birds were recognized': 42,\n",
+              " 'were recognized as': 214,\n",
+              " 'recognized as dinosaurs': 154,\n",
+              " 'as dinosaurs most': 28,\n",
+              " 'dinosaurs most of': 64,\n",
+              " 'of the scientific': 143,\n",
+              " 'the scientific community': 193,\n",
+              " 'scientific community presumed': 158,\n",
+              " 'community presumed dinosaurs': 50,\n",
+              " 'presumed dinosaurs to': 151,\n",
+              " 'dinosaurs to have': 65,\n",
+              " 'to have been': 198,\n",
+              " 'have been sluggish': 100,\n",
+              " 'been sluggish and': 34,\n",
+              " 'sluggish and coldblooded': 165,\n",
+              " 'most research conducted': 132,\n",
+              " 'research conducted since': 156,\n",
+              " 'conducted since the': 51,\n",
+              " 'since the however': 163,\n",
+              " 'the however has': 190,\n",
+              " 'however has indicated': 106,\n",
+              " 'has indicated that': 99,\n",
+              " 'indicated that dinosaurs': 109,\n",
+              " 'that dinosaurs were': 185,\n",
+              " 'dinosaurs were active': 66,\n",
+              " 'were active animals': 209,\n",
+              " 'active animals with': 1,\n",
+              " 'animals with elevated': 19,\n",
+              " 'with elevated metabolisms': 218,\n",
+              " 'elevated metabolisms and': 76,\n",
+              " 'metabolisms and numerous': 124,\n",
+              " 'and numerous adaptations': 13,\n",
+              " 'numerous adaptations for': 135,\n",
+              " 'adaptations for social': 2,\n",
+              " 'for social interaction': 88,\n",
+              " 'evidence shows that': 81,\n",
+              " 'shows that all': 161,\n",
+              " 'that all dinosaurs': 184,\n",
+              " 'all dinosaurs had': 4,\n",
+              " 'dinosaurs had erect': 62,\n",
+              " 'had erect legs': 98,\n",
+              " 'erect legs similar': 77,\n",
+              " 'legs similar to': 115,\n",
+              " 'similar to that': 162,\n",
+              " 'to that of': 201,\n",
+              " 'that of birds': 187,\n",
+              " 'of birds and': 137,\n",
+              " 'birds and many': 39,\n",
+              " 'and many mammals': 11,\n",
+              " 'many mammals as': 122,\n",
+              " 'mammals as opposed': 119,\n",
+              " 'as opposed to': 30,\n",
+              " 'opposed to the': 146,\n",
+              " 'to the sprawling': 203,\n",
+              " 'the sprawling leg': 194,\n",
+              " 'sprawling leg stance': 174,\n",
+              " 'leg stance of': 114,\n",
+              " 'stance of coldblooded': 175,\n",
+              " 'of coldblooded tetrapods': 138,\n",
+              " 'some were herbivorous': 169,\n",
+              " 'were herbivorous others': 212,\n",
+              " 'herbivorous others carnivorous': 104,\n",
+              " 'evidence suggests that': 82,\n",
+              " 'suggests that all': 179,\n",
+              " 'all dinosaurs were': 5,\n",
+              " 'dinosaurs were egglaying': 68,\n",
+              " 'were egglaying and': 211,\n",
+              " 'egglaying and that': 74,\n",
+              " 'and that nestbuilding': 16,\n",
+              " 'that nestbuilding was': 186,\n",
+              " 'nestbuilding was trait': 133,\n",
+              " 'was trait shared': 207,\n",
+              " 'trait shared by': 204,\n",
+              " 'shared by many': 159,\n",
+              " 'by many dinosaurs': 47,\n",
+              " 'many dinosaurs both': 120,\n",
+              " 'dinosaurs both avian': 61,\n",
+              " 'both avian and': 44,\n",
+              " 'avian and nonavian': 32,\n",
+              " 'while dinosaurs were': 216,\n",
+              " 'dinosaurs were ancestrally': 67,\n",
+              " 'were ancestrally bipedal': 210,\n",
+              " 'ancestrally bipedal many': 7,\n",
+              " 'bipedal many extinct': 37,\n",
+              " 'many extinct groups': 121,\n",
+              " 'extinct groups included': 85,\n",
+              " 'groups included quadrupedal': 96,\n",
+              " 'included quadrupedal species': 108,\n",
+              " 'quadrupedal species and': 152,\n",
+              " 'species and some': 170,\n",
+              " 'and some were': 15,\n",
+              " 'some were able': 168,\n",
+              " 'were able to': 208,\n",
+              " 'able to shift': 0,\n",
+              " 'to shift between': 200,\n",
+              " 'shift between these': 160,\n",
+              " 'between these stances': 36,\n",
+              " 'elaborate display structures': 75,\n",
+              " 'display structures such': 70,\n",
+              " 'structures such as': 176,\n",
+              " 'such as horns': 178,\n",
+              " 'as horns or': 29,\n",
+              " 'horns or crests': 105,\n",
+              " 'or crests are': 147,\n",
+              " 'crests are common': 54,\n",
+              " 'are common to': 21,\n",
+              " 'common to all': 49,\n",
+              " 'to all dinosaur': 197,\n",
+              " 'all dinosaur groups': 3,\n",
+              " 'dinosaur groups and': 57,\n",
+              " 'groups and some': 94,\n",
+              " 'and some extinct': 14,\n",
+              " 'some extinct groups': 167,\n",
+              " 'extinct groups developed': 84,\n",
+              " 'groups developed skeletal': 95,\n",
+              " 'developed skeletal modifications': 55,\n",
+              " 'skeletal modifications such': 164,\n",
+              " 'modifications such as': 127,\n",
+              " 'such as bony': 177,\n",
+              " 'as bony armor': 27,\n",
+              " 'bony armor and': 43,\n",
+              " 'armor and spines': 26,\n",
+              " 'while the dinosaurs': 217,\n",
+              " 'the dinosaurs modernday': 189,\n",
+              " 'dinosaurs modernday surviving': 63,\n",
+              " 'modernday surviving avian': 126,\n",
+              " 'surviving avian lineage': 180,\n",
+              " 'avian lineage birds': 33,\n",
+              " 'lineage birds are': 117,\n",
+              " 'birds are generally': 40,\n",
+              " 'are generally small': 23,\n",
+              " 'generally small due': 93,\n",
+              " 'small due to': 166,\n",
+              " 'due to the': 73,\n",
+              " 'to the constraints': 202,\n",
+              " 'the constraints of': 188,\n",
+              " 'constraints of flight': 52,\n",
+              " 'of flight many': 139,\n",
+              " 'flight many nonavian': 87,\n",
+              " 'many nonavian dinosaurs': 123,\n",
+              " 'nonavian dinosaurs were': 134,\n",
+              " 'dinosaurs were largebodiedthe': 69,\n",
+              " 'were largebodiedthe largest': 213,\n",
+              " 'largebodiedthe largest sauropod': 111,\n",
+              " 'largest sauropod dinosaurs': 113,\n",
+              " 'sauropod dinosaurs are': 157,\n",
+              " 'dinosaurs are estimated': 58,\n",
+              " 'are estimated to': 22,\n",
+              " 'estimated to have': 78,\n",
+              " 'to have reached': 199,\n",
+              " 'have reached lengths': 102,\n",
+              " 'reached lengths of': 153,\n",
+              " 'lengths of meters': 116,\n",
+              " 'of meters feet': 141,\n",
+              " 'meters feet and': 125,\n",
+              " 'feet and heights': 86,\n",
+              " 'and heights of': 10,\n",
+              " 'heights of ft': 103,\n",
+              " 'of ft and': 140,\n",
+              " 'ft and were': 91,\n",
+              " 'and were the': 17,\n",
+              " 'were the largest': 215,\n",
+              " 'the largest land': 191,\n",
+              " 'largest land animals': 112,\n",
+              " 'land animals of': 110,\n",
+              " 'animals of all': 18,\n",
+              " 'of all time': 136}"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 23
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "corpus[0]"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 35
+        },
+        "id": "puWzwMjZR2q1",
+        "outputId": "c1c89678-4f1e-43bf-93ec-6d14cd3715b6"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "' dinosaurs are varied from taxonomic morphological and ecological standpoints'"
+            ],
+            "application/vnd.google.colaboratory.intrinsic+json": {
+              "type": "string"
+            }
+          },
+          "metadata": {},
+          "execution_count": 20
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "X[0].toarray()"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "8aUmw3dVR8KR",
+        "outputId": "2b14b3b5-aa47-4818-b802-46e7cdc88af5"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "array([[0.        , 0.        , 0.        , 0.        , 0.        ,\n",
+              "        0.        , 0.        , 0.        , 0.37796447, 0.        ,\n",
+              "        0.        , 0.        , 0.        , 0.        , 0.        ,\n",
+              "        0.        , 0.        , 0.        , 0.        , 0.        ,\n",
+              "        0.        , 0.        , 0.        , 0.        , 0.        ,\n",
+              "        0.37796447, 0.        , 0.        , 0.        , 0.        ,\n",
+              "        0.        , 0.        , 0.        , 0.        , 0.        ,\n",
+              "        0.        , 0.        , 0.        , 0.        , 0.        ,\n",
+              "        0.        , 0.        , 0.        , 0.        , 0.        ,\n",
+              "        0.        , 0.        , 0.        , 0.        , 0.        ,\n",
+              "        0.        , 0.        , 0.        , 0.        , 0.        ,\n",
+              "        0.        , 0.        , 0.        , 0.        , 0.        ,\n",
+              "        0.37796447, 0.        , 0.        , 0.        , 0.        ,\n",
+              "        0.        , 0.        , 0.        , 0.        , 0.        ,\n",
+              "        0.        , 0.        , 0.        , 0.        , 0.        ,\n",
+              "        0.        , 0.        , 0.        , 0.        , 0.        ,\n",
+              "        0.        , 0.        , 0.        , 0.        , 0.        ,\n",
+              "        0.        , 0.        , 0.        , 0.        , 0.        ,\n",
+              "        0.37796447, 0.        , 0.        , 0.        , 0.        ,\n",
+              "        0.        , 0.        , 0.        , 0.        , 0.        ,\n",
+              "        0.        , 0.        , 0.        , 0.        , 0.        ,\n",
+              "        0.        , 0.        , 0.        , 0.        , 0.        ,\n",
+              "        0.        , 0.        , 0.        , 0.        , 0.        ,\n",
+              "        0.        , 0.        , 0.        , 0.        , 0.        ,\n",
+              "        0.        , 0.        , 0.        , 0.        , 0.        ,\n",
+              "        0.        , 0.        , 0.        , 0.        , 0.37796447,\n",
+              "        0.        , 0.        , 0.        , 0.        , 0.        ,\n",
+              "        0.        , 0.        , 0.        , 0.        , 0.        ,\n",
+              "        0.        , 0.        , 0.        , 0.        , 0.        ,\n",
+              "        0.        , 0.        , 0.        , 0.        , 0.        ,\n",
+              "        0.        , 0.        , 0.        , 0.        , 0.        ,\n",
+              "        0.        , 0.        , 0.        , 0.        , 0.        ,\n",
+              "        0.        , 0.        , 0.        , 0.        , 0.        ,\n",
+              "        0.        , 0.        , 0.        , 0.        , 0.        ,\n",
+              "        0.        , 0.        , 0.        , 0.        , 0.        ,\n",
+              "        0.        , 0.        , 0.        , 0.        , 0.        ,\n",
+              "        0.        , 0.37796447, 0.        , 0.        , 0.        ,\n",
+              "        0.        , 0.        , 0.        , 0.        , 0.        ,\n",
+              "        0.        , 0.        , 0.        , 0.        , 0.        ,\n",
+              "        0.        , 0.        , 0.        , 0.        , 0.        ,\n",
+              "        0.        , 0.        , 0.        , 0.        , 0.        ,\n",
+              "        0.        , 0.37796447, 0.        , 0.        , 0.        ,\n",
+              "        0.        , 0.        , 0.        , 0.        , 0.        ,\n",
+              "        0.        , 0.        , 0.        , 0.        ]])"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 24
+        }
+      ]
+    }
+  ]
+}
